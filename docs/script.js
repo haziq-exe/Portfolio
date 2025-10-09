@@ -1,5 +1,5 @@
-const CHARS_PER_SECOND = 850;            // typing speed for normal text
-const ASCII_ART_CHARS_PER_SECOND = 12000; // much faster for ASCII art
+const CHARS_PER_SECOND = 350;            // typing speed for normal text
+const ASCII_ART_CHARS_PER_SECOND = 10000; // much faster for ASCII art
 const DELAY_BETWEEN_ELEMENTS = 100;     // ms pause after each element
 
 const typingElements = document.querySelectorAll('.typing-text');
@@ -114,10 +114,16 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
       } else {
         // Finished typing
         isTyping = false;
-        cursor.remove();
-        el.classList.remove('typing-animation');
-        el.style.removeProperty('display');
-        resolve();
+        // Fade out cursor instead of instant removal
+        cursor.style.opacity = '0';
+        cursor.style.width = '0';
+        cursor.style.marginLeft = '0';
+        setTimeout(() => {
+          cursor.remove();
+          el.classList.remove('typing-animation');
+          el.style.removeProperty('display');
+          resolve();
+        }, 50);
       }
     }
 
