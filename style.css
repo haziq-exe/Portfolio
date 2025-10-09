@@ -135,10 +135,13 @@ a:hover {
   }
 }
 .scanlines {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.6));
+  background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 70%, rgba(0, 0, 0, 0.6));
   background-size: 100% 0.3rem;
-  border-radius: 2rem;
+  border-radius: 0.3rem;
   position: absolute;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 .glow {
   animation: crt-glow 40s ease-in-out infinite, crt-color-drift 40s ease-in-out infinite;
