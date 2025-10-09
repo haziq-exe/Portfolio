@@ -333,7 +333,7 @@ h1 .arrow {
 }
 
 .toggle-content.show {
-  max-height: 1000px; /* Enough to fit content */
+  max-height: 10000px;
   opacity: 1;
 }
 
@@ -341,8 +341,6 @@ h1 .arrow {
 .toggle-content p {
   margin-left: 2.5rem;
 }
-
-
 
 
 body, .frame, .typing-text, .toggle-header, .toggle-content, p, h1, h2, h3, h4, a {
