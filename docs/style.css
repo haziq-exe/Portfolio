@@ -87,8 +87,8 @@ a:hover {
   transform: translate(-50%);
 }
 .output {
-  -webkit-animation: crt-output 10ms infinite;
-          animation: crt-output 10ms infinite;
+  -webkit-animation: crt-output 300ms infinite;
+          animation: crt-output 300ms infinite;
   background-color: #031e11;
   overflow-y: auto;
   overflow-x: hidden;
@@ -104,16 +104,34 @@ a:hover {
   0% {
     opacity: 0.9;
   }
+  25% {
+    opacity: 0.94;
+  }
   50% {
-    opacity: 1;
+    opacity: 0.92;
+  }
+  75% {
+    opacity: 0.96;
+  }
+  100% {
+    opacity: 0.91;
   }
 }
 @keyframes crt-output {
   0% {
     opacity: 0.9;
   }
+  25% {
+    opacity: 0.94;
+  }
   50% {
-    opacity: 1;
+    opacity: 0.92;
+  }
+  75% {
+    opacity: 0.96;
+  }
+  100% {
+    opacity: 0.91;
   }
 }
 .scanlines {
@@ -123,20 +141,11 @@ a:hover {
   position: absolute;
 }
 .glow {
-  animation: crt-glow 8s ease-in-out infinite, crt-color-drift 20s ease-in-out infinite;
-  background: radial-gradient(
-    circle at center,
-    #1bd459 0%,
-    rgba(27, 212, 89, 0.88) 50%,
-    rgba(21, 235, 92, 0.5) 70%,
-    rgba(19, 94, 29, 0.25) 90%,
-    rgba(10, 23, 12, 0) 100%
-  );
+  animation: crt-glow 40s ease-in-out infinite, crt-color-drift 40s ease-in-out infinite;
+  background: radial-gradient(circle at center, #1bd459 0%, rgba(27, 212, 89, 0.88) 58%, rgba(21, 235, 92, 0.57) 80%, rgba(19, 94, 29, 0.27) 93%, rgba(10, 23, 12, 0) 100%);
   opacity: 0.15;
   pointer-events: none;
   position: fixed;
-  mix-blend-mode: screen;
-  transition: filter 1s ease-in-out;
 }
 
 @-webkit-keyframes crt-glow {
@@ -344,7 +353,7 @@ h1 .arrow {
 
 
 body, .frame, .typing-text, .toggle-header, .toggle-content, p, h1, h2, h3, h4, a {
-  animation: textFlicker 2.5s infinite;
+  animation: textFlicker 40s infinite;
 }
 
 /* The keyframes create a very faint brightness/pulse variation */
@@ -439,3 +448,5 @@ div:nth-last-child(2) {
   padding-left: 37px;
   text-indent: -37px;
 }
+
+

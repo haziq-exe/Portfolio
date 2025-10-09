@@ -3,6 +3,44 @@ const ASCII_ART_CHARS_PER_SECOND = 10000; // much faster for ASCII art
 const DELAY_BETWEEN_ELEMENTS = 100;     // ms pause after each element
 
 const typingElements = document.querySelectorAll('.typing-text');
+const phoneEl = document.getElementById('PhoneaboutMeText');
+const desktopEl = document.getElementById('aboutMeText');
+
+const phoneParent = phoneEl?.parentNode;
+const desktopParent = desktopEl?.parentNode;
+
+// Always create placeholders
+const phonePlaceholder = document.createComment('PhoneaboutMeText placeholder');
+const desktopPlaceholder = document.createComment('aboutMeText placeholder');
+
+function checkSize() {
+  if (window.innerWidth < 900) {
+    // Remove desktop version (if still present)
+    if (desktopEl.parentNode) {
+      desktopParent.replaceChild(desktopPlaceholder, desktopEl);
+    }
+    // Add phone version (if missing)
+    if (!phoneEl.parentNode && phonePlaceholder.parentNode) {
+      phonePlaceholder.parentNode.replaceChild(phoneEl, phonePlaceholder);
+    }
+  } else {
+    // Remove phone version (if still present)
+    if (phoneEl.parentNode) {
+      phoneParent.replaceChild(phonePlaceholder, phoneEl);
+    }
+    // Add desktop version (if missing)
+    if (!desktopEl.parentNode && desktopPlaceholder.parentNode) {
+      desktopPlaceholder.parentNode.replaceChild(desktopEl, desktopPlaceholder);
+    }
+  }
+}
+
+window.addEventListener('resize', checkSize);
+checkSize();
+
+
+
+
 
 function prepareElement(el) {
   const originalHTML = el.innerHTML;
