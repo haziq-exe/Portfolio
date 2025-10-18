@@ -1,5 +1,5 @@
-const CHARS_PER_SECOND = 350;            // typing speed for normal text
-const ASCII_ART_CHARS_PER_SECOND = 10000; // much faster for ASCII art
+const CHARS_PER_SECOND = 850;            // typing speed for normal text
+const ASCII_ART_CHARS_PER_SECOND = 30000; // much faster for ASCII art
 const DELAY_BETWEEN_ELEMENTS = 100;     // ms pause after each element
 
 const typingElements = document.querySelectorAll('.typing-text');
@@ -60,7 +60,7 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
 
     // Check if this element or its children contain ASCII art
     const hasAsciiArt = el.querySelector('pre.ascii-art') !== null;
-    const charsPerSecond = hasAsciiArt ? ASCII_ART_CHARS_PER_SECOND : CHARS_PER_SECOND;
+    // const charsPerSecond = hasAsciiArt ? ASCII_ART_CHARS_PER_SECOND : CHARS_PER_SECOND;
 
     // Will hold {node: TextNode, text: originalText, isAsciiArt: boolean} entries in document order
     const textTargets = [];
@@ -97,20 +97,14 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
 
     buildSkeleton(temp, el);
 
+    function isAllSpaces(str) {
+        return str.length > 0 && [...str].every(ch => ch === " " || ch === "\n");
+    }
+
     // Create cursor element
     const cursor = document.createElement('span');
     cursor.className = 'typing-cursor';
-
-    // Append cursor inline with last text node (if possible)
-    function attachCursor() {
-      const lastEntry = textTargets[textTargets.length - 1];
-      if (lastEntry && lastEntry.node.parentNode) {
-        lastEntry.node.parentNode.insertBefore(cursor, lastEntry.node.nextSibling);
-      } else {
-        el.appendChild(cursor);
-      }
-    }
-    attachCursor();
+    cursor.style.display = 'hidden';
 
     // Typing loop with batching
     let nodeIndex = 0;
@@ -121,7 +115,7 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
     function step() {
       if (!isTyping) return;
 
-      accumulatedTime += 16; // ~60fps = 16ms per frame
+      accumulatedTime += 5; // ~60fps = 16ms per frame
 
       // Batch type characters based on accumulated time
       while (nodeIndex < textTargets.length) {
@@ -133,8 +127,11 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
           break;
         }
         
-        if (charIndex < currentEntry.text.length) {
+        if (charIndex < currentEntry.text.length && !(isAllSpaces(currentEntry.text))) {
           const ch = currentEntry.text.charAt(charIndex);
+          if (nodeIndex < 10 && currentEntry.isInAsciiArt === false) {
+            cursor.style.display = 'none'; // ensure cursor is hidden
+          }
           currentEntry.node.appendData(ch);
           charIndex++;
           accumulatedTime -= msPerChar;
@@ -144,18 +141,23 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
         }
       }
 
+
+
       // Update cursor position
-      if (nodeIndex < textTargets.length) {
+      if (nodeIndex < textTargets.length - 1) {
         const entry = textTargets[nodeIndex];
-        entry.node.parentNode.insertBefore(cursor, entry.node.nextSibling);
+        if (entry.isInAsciiArt === false) {
+          cursor.style.display = ""; // ensure cursor is visible
+          entry.node.parentNode.insertBefore(cursor, entry.node.nextSibling);
+        }
+        else {
+          cursor.style.display = "none"; // hide cursor in ASCII art
+        }
         requestAnimationFrame(step);
       } else {
         // Finished typing
         isTyping = false;
-        // Fade out cursor instead of instant removal
-        cursor.style.opacity = '0';
-        cursor.style.width = '0';
-        cursor.style.marginLeft = '0';
+        console.log('Finished typing element');
         setTimeout(() => {
           cursor.remove();
           el.classList.remove('typing-animation');
