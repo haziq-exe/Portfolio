@@ -137,11 +137,11 @@ a:hover {
   }
 }
 ::-moz-selection {
-  background-color: #14fdce;
+  background-color: #12d7af;
   color: #031e11;
 }
 ::selection {
-  background-color: #14fdce;
+  background-color: #12d7af;
   color: #031e11;
 }
 @font-face {
@@ -252,7 +252,7 @@ h2 {
 
 .toggle-header:hover {
   color: black;
-  background-color: #13f9cb;
+  background-color: #29caaa;
 }
 
 .arrow {
