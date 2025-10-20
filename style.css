@@ -260,11 +260,18 @@ h2 {
 .toggle-header:hover {
   color: black;
   background-color: #29caaa;
+  border-radius: 4px;
+  padding: 0px 8px;
 }
 
 .arrow {
   display: inline-block;
   transition: transform;
+  user-select: none;
+}
+
+br {
+  user-select: none;
 }
 
 .toggle-header.open .arrow {
@@ -357,12 +364,12 @@ div:nth-last-child(2) {
   padding-bottom: 0;
 }
 
-.container {
+body .noisy {
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
 }
-.container::-webkit-scrollbar { 
-    display: none;  /* Older Safari and Chromium */
+body .noisy::-webkit-scrollbar { 
+    display: hidden;  /* Older Safari and Chromium */
 }
 
 .ascii-wrapper {
