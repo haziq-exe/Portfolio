@@ -1,6 +1,6 @@
-const CHARS_PER_SECOND = 850;            // typing speed for normal text
-const ASCII_ART_CHARS_PER_SECOND = 30000; // much faster for ASCII art
-const DELAY_BETWEEN_ELEMENTS = 100;     // ms pause after each element
+const CHARS_PER_SECOND = 850;            
+const ASCII_ART_CHARS_PER_SECOND = 30000;
+const DELAY_BETWEEN_ELEMENTS = 100;
 
 const typingElements = document.querySelectorAll('.typing-text');
 const phoneEl = document.getElementById('PhoneaboutMeText');
@@ -9,9 +9,11 @@ const desktopEl = document.getElementById('aboutMeText');
 const phoneParent = phoneEl?.parentNode;
 const desktopParent = desktopEl?.parentNode;
 
-// Always create placeholders
+
 const phonePlaceholder = document.createComment('PhoneaboutMeText placeholder');
 const desktopPlaceholder = document.createComment('aboutMeText placeholder');
+
+const sound = document.getElementById("clickSound");
 
 function checkSize() {
   if (window.innerWidth < 900) {
@@ -46,7 +48,7 @@ function prepareElement(el) {
   const originalHTML = el.innerHTML;
   const originalDisplay = window.getComputedStyle(el).display;
   el.classList.add('waiting-to-type');
-  // store original HTML for restart
+  
   el.dataset.originalHtml = originalHTML;
   el.dataset.originalDisplay = originalDisplay;
   return { el, originalHTML, originalDisplay };
@@ -54,44 +56,37 @@ function prepareElement(el) {
 
 function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
   return new Promise(resolve => {
-    // Parse original HTML into a temp container
+
     const temp = document.createElement('div');
     temp.innerHTML = originalHTML;
 
-    // Check if this element or its children contain ASCII art
-    const hasAsciiArt = el.querySelector('pre.ascii-art') !== null;
-    // const charsPerSecond = hasAsciiArt ? ASCII_ART_CHARS_PER_SECOND : CHARS_PER_SECOND;
 
-    // Will hold {node: TextNode, text: originalText, isAsciiArt: boolean} entries in document order
     const textTargets = [];
 
-    // Clear real element and make visible for animation
     el.innerHTML = '';
     el.classList.remove('waiting-to-type');
     el.classList.add('typing-animation');
-    // ensure display style remains the same (helps if originally inline-block/flex)
+
     el.style.display = originalDisplay;
 
-    // Build skeleton: clone element tags & attributes (cloneNode(false)) and
-    // create empty text nodes where text existed; capture them in textTargets.
+
     function buildSkeleton(sourceNode, targetParent) {
       sourceNode.childNodes.forEach(child => {
         if (child.nodeType === Node.TEXT_NODE) {
           const tnode = document.createTextNode('');
           targetParent.appendChild(tnode);
-          // Check if this text node is inside a pre.ascii-art element
           let isInAsciiArt = false;
+
           if (sourceNode.classList && sourceNode.classList.contains('ascii-art')) {
             isInAsciiArt = true;
           }
           textTargets.push({ node: tnode, text: child.nodeValue, isInAsciiArt });
         } else if (child.nodeType === Node.ELEMENT_NODE) {
-          // clone tag and its attributes but not its children, then recurse
           const cloned = child.cloneNode(false);
           targetParent.appendChild(cloned);
           buildSkeleton(child, cloned);
         }
-        // ignore other node types (comments etc.)
+        
       });
     }
 
@@ -101,12 +96,11 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
         return str.length > 0 && [...str].every(ch => ch === " " || ch === "\n");
     }
 
-    // Create cursor element
+
     const cursor = document.createElement('span');
     cursor.className = 'typing-cursor';
     cursor.style.display = 'hidden';
 
-    // Typing loop with batching
     let nodeIndex = 0;
     let charIndex = 0;
     let accumulatedTime = 0;
@@ -115,9 +109,9 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
     function step() {
       if (!isTyping) return;
 
-      accumulatedTime += 5; // ~60fps = 16ms per frame
+      accumulatedTime += 5;
 
-      // Batch type characters based on accumulated time
+      
       while (nodeIndex < textTargets.length) {
         const currentEntry = textTargets[nodeIndex];
         const charsPerSecond = currentEntry.isInAsciiArt ? ASCII_ART_CHARS_PER_SECOND : CHARS_PER_SECOND;
@@ -130,7 +124,7 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
         if (charIndex < currentEntry.text.length && !(isAllSpaces(currentEntry.text))) {
           const ch = currentEntry.text.charAt(charIndex);
           if (nodeIndex < 10 && currentEntry.isInAsciiArt === false) {
-            cursor.style.display = 'none'; // ensure cursor is hidden
+            cursor.style.display = 'none';
           }
           currentEntry.node.appendData(ch);
           charIndex++;
@@ -143,21 +137,19 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
 
 
 
-      // Update cursor position
+      
       if (nodeIndex < textTargets.length - 1) {
         const entry = textTargets[nodeIndex];
         if (entry.isInAsciiArt === false) {
-          cursor.style.display = ""; // ensure cursor is visible
+          cursor.style.display = "";
           entry.node.parentNode.insertBefore(cursor, entry.node.nextSibling);
         }
         else {
-          cursor.style.display = "none"; // hide cursor in ASCII art
+          cursor.style.display = "none";
         }
         requestAnimationFrame(step);
       } else {
-        // Finished typing
         isTyping = false;
-        console.log('Finished typing element');
         setTimeout(() => {
           cursor.remove();
           el.classList.remove('typing-animation');
@@ -167,7 +159,6 @@ function typeElementHTMLAware({ el, originalHTML, originalDisplay }) {
       }
     }
 
-    // slight delay to let CSS apply before typing starts
     setTimeout(() => requestAnimationFrame(step), 5);
   });
 }
@@ -179,7 +170,6 @@ async function runTypingSequence() {
     await new Promise(r => setTimeout(r, DELAY_BETWEEN_ELEMENTS));
   }
 
-  // ✅ Bind toggle listeners AFTER typing animation is done
   setupToggles();
 }
 
@@ -187,7 +177,7 @@ document.querySelectorAll('.toggle-header').forEach(header => {
   header.classList.add('visible');
 });
 
-// start when DOM is ready
+
 window.addEventListener('DOMContentLoaded', runTypingSequence);
 
 function setupToggles() {
@@ -202,4 +192,10 @@ function setupToggles() {
       content.classList.toggle("show");
     });
   });
+}
+
+function playClickSound() {
+  sound.currentTime = 0;
+  sound.volume = 0.25;
+  sound.play();
 }

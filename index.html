@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="https://public.codepenassets.com/css/reset-2.0.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
     <link rel="stylesheet" href="style.css">
+    <audio id="clickSound" src="/sound/Click.mp3"></audio>
   </head>
     
   <body class="noisy">
@@ -102,7 +103,7 @@
         </div>
 
         <div class="typing-text">
-          <h2 class="toggle-header" data-target="publications">
+          <h2 class="toggle-header" data-target="publications" onclick="playClickSound()">
             <span class="arrow">&gt;</span> Publications
           </h2>
         </div>
@@ -115,7 +116,7 @@
         </div>
 
         <div class="typing-text">
-          <h2 class="toggle-header" data-target="projects">
+          <h2 class="toggle-header" data-target="projects" onclick="playClickSound()">
             <span class="arrow">&gt;</span> Projects
           </h2>
         </div>
@@ -156,7 +157,7 @@
             <p>The model achieved 94.4% accuracy on the test set.</p>
           </div>
           <div class="typing-text">
-            <h2 class="toggle-header" data-target="experience">
+            <h2 class="toggle-header" data-target="experience" onclick="playClickSound()">
               <span class="arrow">&gt;</span> Experience
             </h2>
           </div>
@@ -172,7 +173,7 @@
         </div>
 
           <div class="typing-text">
-            <h2 class="toggle-header" data-target="other">
+            <h2 class="toggle-header" data-target="other" onclick="playClickSound()">
               <span class="arrow">&gt;</span> Other
             </h2>
           </div>
@@ -186,7 +187,7 @@
         </div>
 
         <div class="typing-text">
-          <h2 class="toggle-header" data-target="contact">
+          <h2 class="toggle-header" data-target="contact" onclick="playClickSound()">
             <span class="arrow">&gt;</span> Contact
           </h2>
         </div>
@@ -204,6 +205,6 @@
 </div>
   <div class="piece scanlines noclick"></div>
   <div class="piece glow noclick"></div>
-    <script src="script.js"></script>
+  <script src="script.js"></script>
   </body>
 </html>

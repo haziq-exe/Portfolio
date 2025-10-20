@@ -385,7 +385,7 @@ body .noisy::-webkit-scrollbar {
   margin-left: -50px; /* adjust left margin */
   padding: 0;
   white-space: pre;
-  overflow-x: auto;
+  overflow: hidden;
   text-shadow: 0 0 5px rgba(20, 253, 206, 0.3);
   flex-shrink: 0;
   display: block;
